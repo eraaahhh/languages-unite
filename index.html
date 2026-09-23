@@ -45,7 +45,8 @@
     .meta { color:#6f5d6b; font-size:.95rem; }
     .speak { margin-top:13px; padding:9px 13px; border:0; border-radius:999px; color:#fff; background:var(--purple); cursor:pointer; font-weight:800; }
     .speak:hover { background:var(--pink-dark); }
-    footer { padding:25px 0 50px; color:#79566a; text-align:center; font-weight:700; }
+    .closing { text-align:center; padding:10px 0 6px; color:var(--pink-dark); font-weight:800; }
+    footer { padding:8px 0 42px; color:#79566a; text-align:center; font-weight:700; }
     @media (max-width:720px) { nav{align-items:flex-start;flex-direction:column;gap:6px} nav a{margin:0 14px 0 0}.hero,section{padding:25px 20px}.highlight{grid-template-columns:1fr}.branches{grid-template-columns:repeat(2,minmax(125px,1fr))}.branches::before,.language::before{display:none} }
   </style>
 </head>
@@ -96,6 +97,7 @@
       </div>
     </section>
   </main>
+  <div class="closing">🌏 Every language opens a new door. Happy European Day of Languages!</div>
   <footer>Made by Era and Luziana</footer>
   <script>
     document.querySelectorAll('.language').forEach(button => button.addEventListener('click', () => { document.querySelector('#greeting').textContent = `${button.dataset.language}: ${button.dataset.greeting}`; }));
