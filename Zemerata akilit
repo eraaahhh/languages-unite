@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zemërimi i Akilit</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --text: #e2e8f0;
+      --muted: #d8e1ef;
+      --gold: #fbbf24;
+      --red: #ef4444;
+      --blue: #60a5fa;
+      --border: rgba(148,163,184,0.2);
+      --shadow: 0 22px 50px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(251,191,36,0.18), transparent 18%),
+        radial-gradient(circle at 80% 15%, rgba(96,165,250,0.14), transparent 22%),
+        linear-gradient(135deg, #040914 0%, #0a1220 36%, #111827 100%);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 28px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(10,16,24,0.55);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 72px;
+    }
+
+    .brand {
+      color: var(--gold);
+      font-weight: bold;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .hero {
+      padding: 90px 0 60px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(251,191,36,0.12);
+      border: 1px solid rgba(251,191,36,0.4);
+      color: var(--gold);
+      font-size: 0.78rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      line-height: 1.05;
+      letter-spacing: -0.05em;
+      margin-bottom: 18px;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 700px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 180px;
+      padding: 14px 26px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 35px rgba(0,0,0,0.22);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #101827;
+    }
+
+    .btn-secondary {
+      background: rgba(148,163,184,0.08);
+      border: 1px solid rgba(148,163,184,0.25);
+      color: white;
+    }
+
+    .hero-panel {
+      background: linear-gradient(180deg, rgba(248,250,252,0.08), rgba(255,255,255,0.025));
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .quote {
+      font-size: 1.12rem;
+      color: white;
+      padding-left: 16px;
+      border-left: 3px solid var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .stat {
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px 12px;
+      text-align: center;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 1.8rem;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    section {
+      padding: 52px 0;
+    }
+
+    .section-head {
+      margin-bottom: 28px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #f8fafc, #edf2f7);
+      color: #0f172a;
+      border-radius: 22px;
+      padding: 26px 22px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      min-height: 280px;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--red), var(--gold), var(--blue));
+    }
+
+    .card h3 {
+      font-size: 1.38rem;
+      margin-bottom: 14px;
+    }
+
+    .card ul {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .card li {
+      position: relative;
+      padding-left: 18px;
+      color: #1f2937;
+    }
+
+    .card li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+      margin-top: 12px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--gold), rgba(251,191,36,0.12));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 22px;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px 20px;
+      margin-left: 8px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -24px;
+      top: 22px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 4px rgba(251,191,36,0.12);
+    }
+
+    .timeline-item h3 {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .timeline-item p { color: var(--muted); }
+
+    .highlight-box {
+      margin-top: 18px;
+      padding: 24px 26px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(96,165,250,0.08));
+      border: 1px solid var(--border);
+    }
+
+    .highlight-box p { color: var(--muted); }
+
+    .final-quote {
+      text-align: center;
+      padding: 34px 18px;
+      font-size: clamp(1.2rem, 2vw, 1.85rem);
+      font-weight: 700;
+      color: white;
+      line-height: 1.5;
+      background: linear-gradient(135deg, rgba(251,191,36,0.14), rgba(96,165,250,0.1));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      margin-top: 10px;
+    }
+
+    footer {
+      padding: 34px 0 60px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid rgba(148,163,184,0.18);
+      margin-top: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .cards { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .hero-grid, .cards, .stats { grid-template-columns: 1fr; }
+      nav {
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        padding: 18px 0;
+      }
+      .nav-links { justify-content: center; }
+      .hero { padding-top: 70px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">Iliada</div>
+        <div class="nav-links">
+          <a href="#zemerimi">Zemërimi</a>
+          <a href="#perplasje">Përplasja</a>
+          <a href="#hyjnore">Ndërhyrja</a>
+          <a href="#pasojat">Pasojat</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Konflikti Homerik</div>
+          <h1>Zemërimi i Akilit</h1>
+          <p class="lead">
+            Zemërimi i Akilit është fillimi i një tragjedie ku nderi, pushteti dhe fatet
+            hyjnore përplasen në një konflikt të madh, i cili ndryshon rrjedhën e luftës.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#zemerimi" class="btn btn-primary">Shiko hapat</a>
+            <a href="#pasojat" class="btn btn-secondary">Pasojat</a>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <p class="quote">
+            “Zemërimi i Akilit nuk është thjesht një ndjenjë, por një krizë morale që e kthen luftën në tragjedi.”
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <b>1</b>
+              <span>Shkak fillestar</span>
+            </div>
+            <div class="stat">
+              <b>4</b>
+              <span>Hapa kryesorë</span>
+            </div>
+            <div class="stat">
+              <b>∞</b>
+              <span>Pasojat</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="zemerimi">
+      <div class="container">
+        <div class="section-head">
+          <h2>1. Shkaku i zemërimit</h2>
+          <p>
+            Konflikti fillon kur Agamemnon, duke e rritur nevojën e tij për autoritet,
+            e cenon nderin e Akilit dhe e bën të ndjejë një padrejtësi të thellë.
+          </p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Fakti fillestar</h3>
+            <ul>
+              <li>Agamemnon refuzon t’i kthejë Krisidën, vajzën e priftit të Apollonit.</li>
+              <li>Apolloni dërgon murtajë mbi kampin e akejve.</li>
+              <li>Krisida duhet të kthehet te babai i saj.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Ndëshkimi hyjnor</h3>
+            <ul>
+              <li>Perëndimi Apollon ndëshkon kampin e grekëve.</li>
+              <li>Grekët janë të detyruar të pranohen me kërkesën e orakulit.</li>
+              <li>Agamemnon pranon kthimin e Krisidës.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Fyerja e nderit</h3>
+            <ul>
+              <li>Agamemnon kërkon kompensim për humbjen e autoritetit të tij.</li>
+              <li>I merr Akilit Briseidën, robëreshën e tij.</li>
+              <li>Akili ndjen poshtërrim, shkelje dhe padrejtësi.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Efekti moral</h3>
+            <ul>
+              <li>Akili humbet durimin.</li>
+              <li>Ai refuzon të luftojë.</li>
+              <li>Një zemërim i madh fillon të ndikojë në luftë.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="perplasje">
+      <div class="container">
+        <div class="section-head">
+          <h2>2. Përplasja Akil – Agamemnon</h2>
+          <p>
+            Ky nuk është vetëm një konflikt personal; është një kundërshtim midis pushtetit
+            dhe nderit, autoritetit dhe dinjitetit.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <h3>Fyerja publike</h3>
+            <p>
+              Akili e quan Agamemnonin “lakmitar”, “të pandershëm” dhe “gjakpirës”.
+              Agamemnon, me fuqinë e tij, e poshtëron publikisht Akilin.
+            </p>
+          </div>
+
+          <div class="timeline-item">
+            <h3>Vendimi i Akilit</h3>
+            <p>
+              Akili tërhiqet plotësisht nga lufta, së bashku me Mirmidonët e tij,
+              dhe i kërkon nënës së tij që Zeusi të ndihmojë trojanët.
+            </p>
+          </div>
+
+          <div class="timeline-item">
+            <h3>Konflikti i strukturës së botës</h3>
+            <p>
+              Konflikti bëhet një shfaqje e një marrëveshjeje të madhe: Agamemnon
+              mbështetet në pushtet, ndërsa Akili mbështetet në nderin dhe dinjitetin.
+            </p>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <p>
+            Kjo pikë e konfliktit paraqet thelbin e tragjedisë: një fyerje e vogël
+            bëhet një krizë e madhe që e ndërron tërë rrjedhën e luftës.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="hyjnore">
+      <div class="container">
+        <div class="section-head">
+          <h2>3. Ndërhyrja hyjnore</h2>
+          <p>
+            Perënditë afrohen drejtpërdrejt në ngjarje. Ata nuk janë vetëm dëshmitarë,
+            por aktorë të fuqishëm që përcaktojnë fatin e njerëzve.
+          </p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Athina</h3>
+            <ul>
+              <li>Hera i dërgon Athinën.</li>
+              <li>Athina e ndalon Akilin nga dhuna.</li>
+              <li>Perëndia e kap me force duke e larguar nga zemërimi.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Zeusi</h3>
+            <ul>
+              <li>Zeusi e ndihmon Trojën.</li>
+              <li>Premton epërsi për Hektorin.</li>
+              <li>Fati njerëzor shtrihet nën kontrollin hyjnor.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Theti</h3>
+            <ul>
+              <li>E ëma e Akilit, Theti, i kërkon Zeusit ndihmë.</li>
+              <li>Perëndesha kërkon të mbrojë birin e saj.</li>
+              <li>Një lidhje e fuqishme midis njerëzve dhe perëndive fillon të shihet.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Fati</h3>
+            <ul>
+              <li>Njerëzit nuk janë të pavarur nga perënditë.</li>
+              <li>Ndërhyrja hyjnore tregon se tragedia është e parashikuar.</li>
+              <li>Megjithatë, njerëzit përshtaten me veprimet e tyre.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pasojat">
+      <div class="container">
+        <div class="section-head">
+          <h2>4. Pasojat e paralajmëruara</h2>
+          <p>
+            Zemërimi i Akilit ka pasoja të thella: bie qeverisja e grekëve, vdes një mik i
+            ngushtë dhe fillon rruga drejt hakmarrjes dhe tragedisë.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <h3>Dobësimi i akejve</h3>
+            <p>
+              Pa Akilin, grekët humbasin betejën. Trojanët i afrohen anijeve dhe i vënë zjarr
+              kampit të grekëve.
+            </p>
+          </div>
+
+          <div class="timeline-item">
+            <h3>Vdekja e Patrokli</h3>
+            <p>
+              Patrokli, shoku i ngushtë i Akilit, vesh armët e tij dhe lufton me guxim, por
+              vritet nga Hektori. Ky moment e kthen konfliktin në tragjedi.
+            </p>
+          </div>
+
+          <div class="timeline-item">
+            <h3>Zemërimi hakmarrës</h3>
+            <p>
+              Zemërimi i parë kundër Agamemnonit kthehet në zemërim hakmarrës kundër Hektorit.
+              Akili rikthehet në fushën e betejës me pasoja fatale për Trojën.
+            </p>
+          </div>
+        </div>
+
+        <div class="final-quote">
+          “Zemërimi i Akilit nuk është vetëm një moment i luftës – është fillimi i një
+          tragjedie të madhe, ku nderi, hakmarrja dhe fatet hyjnore shkojnë drejt fundit.”
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 | Zemërimi i Akilit – Strukturë e konfliktit homerik</p>
+    </div>
+  </footer>
+</body>
+</html>
